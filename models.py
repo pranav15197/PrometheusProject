@@ -26,6 +26,10 @@ class Patient(Base):
     ethnicity_code_system = Column(String(100), nullable=True)
     country = Column(String(100), nullable=True)
 
+    @staticmethod
+    def get_id_for_source_id(session, source_id):
+        return session.query(Patient.id).filter_by(source_id=source_id).scalar()
+
 
 class Encounter(Base):
     __tablename__ = "encounters"
@@ -37,6 +41,10 @@ class Encounter(Base):
     end_date = Column(DateTime)
     type_code = Column(String(100), nullable=True)
     type_code_system = Column(String(100), nullable=True)
+
+    @staticmethod
+    def get_id_for_source_id(session, source_id):
+        return session.query(Encounter.id).filter_by(source_id=source_id).scalar()
 
 
 class Procedure(Base):
