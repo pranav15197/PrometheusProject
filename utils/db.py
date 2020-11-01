@@ -1,13 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from config import USERNAME, PASSWORD, HOST, DB
 
-
-Base = declarative_base()  # Base class used by other models
-USERNAME = "postgres"
-PASSWORD = "testing"
-HOST = "localhost"
-DB = "prometheus"
+Base = declarative_base()
 
 
 def get_db_engine():

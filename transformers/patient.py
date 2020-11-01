@@ -5,7 +5,7 @@ class PatientTransformer:
     def __init__(self, raw_data):
         self.raw_data = raw_data
 
-    def deserialize(self):
+    def deserialize(self, session):
         race_ext, ethnicity_ext = None, None
         for ext in self.raw_data.get("extension", []):
             if (
