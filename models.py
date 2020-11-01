@@ -4,10 +4,9 @@ from sqlalchemy import (
     String,
     Date,
     DateTime,
-    Boolean,
     ForeignKey,
-    Text,
     DECIMAL,
+    Index,
 )
 from sqlalchemy.orm import relationship
 from utils.db import Base
@@ -15,7 +14,7 @@ from utils.db import Base
 
 class Patient(Base):
     __tablename__ = "patients"
-
+    SRC_INDEX = "patient_source_id_idx"
     id = Column(Integer, primary_key=True)
     source_id = Column(String(100), unique=True)
     birth_date = Column(Date, nullable=True)
@@ -34,9 +33,17 @@ class Patient(Base):
     def get_id_for_source_id(session, source_id):
         return session.query(Patient.id).filter_by(source_id=source_id).scalar()
 
+    @staticmethod
+    def create_source_id_index(session):
+        engine = session.get_bind()
+        patient_source_id_idx = Index(Patient.SRC_INDEX, Patient.source_id)
+        patient_source_id_idx.create(engine)
+        session.commit()
+
 
 class Encounter(Base):
     __tablename__ = "encounters"
+    SRC_INDEX = "encounter_source_id_idx"
     id = Column(Integer, primary_key=True)
     patient_id = Column(Integer, ForeignKey("patients.id"))
     patient = relationship("Patient")
@@ -53,6 +60,13 @@ class Encounter(Base):
     @staticmethod
     def get_id_for_source_id(session, source_id):
         return session.query(Encounter.id).filter_by(source_id=source_id).scalar()
+
+    @staticmethod
+    def create_source_id_index(session):
+        engine = session.get_bind()
+        patient_source_id_idx = Index(Encounter.SRC_INDEX, Encounter.source_id)
+        patient_source_id_idx.create(engine)
+        session.commit()
 
 
 class Procedure(Base):

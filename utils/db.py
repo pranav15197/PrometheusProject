@@ -36,3 +36,17 @@ def init_db():
     if not engine.dialect.has_table(engine, Observation.__tablename__):
         Observation.__table__.create(engine)
     engine.dispose()
+
+
+def drop_all_data(session):
+    from models import Patient, Encounter, Observation, Procedure
+
+    Patient.clear_all_records(session)
+    Encounter.clear_all_records(session)
+    Observation.clear_all_records(session)
+    Procedure.clear_all_records(session)
+
+    session.execute(f"DROP INDEX IF EXISTS {Patient.SRC_INDEX}")
+    session.execute(f"DROP INDEX IF EXISTS {Encounter.SRC_INDEX}")
+
+    session.commit()
