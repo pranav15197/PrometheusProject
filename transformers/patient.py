@@ -5,6 +5,13 @@ class PatientTransformer:
     def __init__(self, raw_data):
         self.raw_data = raw_data
 
+    def validate(self):
+        try:
+            self.raw_data["id"]
+        except KeyError:
+            return False
+        return True
+
     def deserialize(self, session):
         race_ext, ethnicity_ext = None, None
         for ext in self.raw_data.get("extension", []):

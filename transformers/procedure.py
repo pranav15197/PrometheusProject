@@ -5,6 +5,15 @@ class ProcedureTransformer:
     def __init__(self, raw_data):
         self.raw_data = raw_data
 
+    def validate(self):
+        try:
+            self.raw_data["id"]
+            self.raw_data["subject"]["reference"]
+            self.raw_data["context"]["reference"]
+        except KeyError:
+            return False
+        return True
+
     def deserialize(self, session):
         patient_src_id = self.raw_data["subject"]["reference"].split("/")[0]
         patient_id = Patient.get_id_for_source_id(session, patient_src_id)

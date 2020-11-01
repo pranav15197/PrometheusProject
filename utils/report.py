@@ -25,7 +25,7 @@ def generate_data_size_report(session):
 
 def generate_gender_report(session):
     print("---" * 10)
-    print("Patients By Gender")
+    print("PATIENTS BY GENDER")
     print("")
     gender_groups = (
         session.query(Patient.gender, func.count(Patient.gender))
@@ -38,7 +38,7 @@ def generate_gender_report(session):
 
 def generate_procedures_report(session):
     print("---" * 10)
-    print("Top Procedures")
+    print("TOP PROCEDURES")
     print("")
     top_procedures = (
         session.query(
