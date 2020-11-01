@@ -15,27 +15,33 @@ class ObservationTransformer:
         if "component" in self.raw_data:
             components = [
                 {"code": component["code"], "valueQuantity": component["valueQuantity"]}
-                for component in self.raw_data["components"]
+                for component in self.raw_data["component"]
             ]
         else:
             components = [
                 {
                     "code": self.raw_data["code"],
-                    "valueQuantity": self.raw_data["valueQuantity"],
+                    "valueQuantity": self.raw_data.get("valueQuantity", None),
                 }
             ]
 
         return [
             Observation(
-                source_id=self.raw_data["source_id"],
+                source_id=self.raw_data["id"] + "-" + str(i),
                 patient_id=patient_id,
                 encounter_id=encounter_id,
                 observation_date=self.raw_data["effectiveDateTime"].split("T")[0],
                 type_code=component["code"]["coding"][0]["code"],
                 type_code_system=component["code"]["coding"][0]["system"],
-                value=component["valueQuantity"]["value"],
-                unit_code=component["valueQuantity"]["unit"],
-                unit_code_system=component["valueQuantity"]["system"],
+                value=component["valueQuantity"]["value"]
+                if component["valueQuantity"]
+                else None,
+                unit_code=component["valueQuantity"]["unit"]
+                if component["valueQuantity"]
+                else None,
+                unit_code_system=component["valueQuantity"]["system"]
+                if component["valueQuantity"]
+                else None,
             )
-            for component in components
+            for i, component in enumerate(components)
         ]

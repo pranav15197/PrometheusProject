@@ -9,7 +9,7 @@ class EncounterTransformer:
         patient_src_id = self.raw_data["subject"]["reference"].split("/")[0]
         patient_id = Patient.get_id_for_source_id(session, patient_src_id)
         return Encounter(
-            source_id=self.raw_data["source_id"],
+            source_id=self.raw_data["id"],
             patient_id=patient_id,
             start_date=self.raw_data["period"]["start"],
             end_date=self.raw_data["period"]["end"],

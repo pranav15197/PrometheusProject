@@ -11,10 +11,7 @@ DB = "prometheus"
 
 
 def get_db_engine():
-    engine = create_engine(
-        f"postgresql+psycopg2://{USERNAME}:{PASSWORD}@{HOST}/{DB}",
-        echo=True,
-    )
+    engine = create_engine(f"postgresql+psycopg2://{USERNAME}:{PASSWORD}@{HOST}/{DB}")
     return engine
 
 
@@ -27,10 +24,11 @@ def get_session():
 
 
 def init_db():
-    from models import Patient, Encounter, Procedure
+    from models import Patient, Encounter, Procedure, Observation
 
     engine = get_db_engine()
     Patient.__table__.create(engine)
     Encounter.__table__.create(engine)
     Procedure.__table__.create(engine)
+    Observation.__table__.create(engine)
     engine.dispose()

@@ -16,7 +16,7 @@ class ProcedureTransformer:
         else:
             procedure_date = self.raw_data["performedPeriod"]["start"].split("T")[0]
         return Procedure(
-            source_id=self.raw_data["source_id"],
+            source_id=self.raw_data["id"],
             patient_id=patient_id,
             encounter_id=encounter_id,
             procedure_date=procedure_date,
