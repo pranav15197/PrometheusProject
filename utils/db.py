@@ -27,8 +27,12 @@ def init_db():
     from models import Patient, Encounter, Procedure, Observation
 
     engine = get_db_engine()
-    Patient.__table__.create(engine)
-    Encounter.__table__.create(engine)
-    Procedure.__table__.create(engine)
-    Observation.__table__.create(engine)
+    if not engine.dialect.has_table(engine, Patient.__tablename__):
+        Patient.__table__.create(engine)
+    if not engine.dialect.has_table(engine, Encounter.__tablename__):
+        Encounter.__table__.create(engine)
+    if not engine.dialect.has_table(engine, Procedure.__tablename__):
+        Procedure.__table__.create(engine)
+    if not engine.dialect.has_table(engine, Observation.__tablename__):
+        Observation.__table__.create(engine)
     engine.dispose()
